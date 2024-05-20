@@ -8,13 +8,10 @@ import java.util.concurrent.Future;
 
 public class Main {
     public static void main(String[] args) {
-        //Input:
         final String text;
-        final int THREAD_COUNT;
         try {
             StringBuilder builder = new StringBuilder();
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
-            THREAD_COUNT = Integer.parseInt(bufferedReader.readLine());
             String line;
             while (true) {
                 line = bufferedReader.readLine();
@@ -29,67 +26,20 @@ public class Main {
         }
 
         final long startTime = System.nanoTime();
-        //Process:
-        //Write your code here
 
-        WordCount wordCount = new WordCount(text);
-        wordCount.start();
+        ThreadRunner threadRunner = new ThreadRunner(text);
+        threadRunner.run();
+
         try {
-            wordCount.join();
+            threadRunner.join();
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-
-        LongestWord longestWord = new LongestWord(text);
-        longestWord.start();
-        try {
-            longestWord.join();
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-
-        MostFrequentWord mostFrequentWord = new MostFrequentWord(text);
-        mostFrequentWord.start();
-        try {
-            mostFrequentWord.join();
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-
-        HackCode hackCode = new HackCode(text);
-        hackCode.start();
-        try {
-            hackCode.join();
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-
-        int N = 4; // replace with the number of threads you want
-
-        ExecutorService executor = Executors.newFixedThreadPool(N);
-
-        Future<?> wordCountFuture = executor.submit(new WordCount(text));
-        Future<?> longestWordFuture = executor.submit(new LongestWord(text));
-        Future<?> mostFrequentWordFuture = executor.submit(new MostFrequentWord(text));
-        Future<?> hackCodeFuture = executor.submit(new HackCode(text));
-
-        try {
-            wordCountFuture.get();
-            longestWordFuture.get();
-            mostFrequentWordFuture.get();
-            hackCodeFuture.get();
-        } catch (InterruptedException | ExecutionException e) {
-            throw new RuntimeException(e);
-        }
-
-        executor.shutdown();
 
         final long elapsedMillis = (System.nanoTime() - startTime) / 1000000;
-        //Output:
-        //Print the results here
-        System.out.println("Word count: " + wordCount.getWordCount());
-        System.out.println("The longest word is \"" + longestWord.getLongestWord() + "\" with a length of " + longestWord.getLongestWord().length() + ".");
-        System.out.println("The most frequent word is \"" + mostFrequentWord.getMostFrequentWord() + "\" with " + mostFrequentWord.getFrequency() + " appearances.");
-        System.out.printf("HackCode: %.3f" , hackCode.calculateHackCode(text));
+        System.out.println("Word count: " + ThreadRunner.getWordCount());
+        System.out.println("The longest word is \"" + ThreadRunner.getLongestWord() + "\" with a length of " + ThreadRunner.getLongestWord().length() + ".");
+        System.out.println("The most frequent word is \"" + ThreadRunner.getMostFrequentWord() + "\" with " + ThreadRunner.getFrequency() + " appearances.");
+        System.out.printf("HackCode: %.3f" , ThreadRunner.getHackCode());
     }
 }

@@ -23,7 +23,6 @@ public class MostFrequentWord extends Thread{
             }
         }
 
-        // Handle the last word
         if (word.length() > 0) {
             String finalWord = word.toString();
             wordCounts.put(finalWord, wordCounts.getOrDefault(finalWord, 0) + 1);

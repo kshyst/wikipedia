@@ -1,11 +1,11 @@
 public class ThreadRunner extends Thread {
 
     private final String text;
-    private String mostFrequentWord;
-    private int frequency;
-    private String longestWord;
-    private double hackCode;
-    private int wordCount;
+    private static String mostFrequentWord;
+    private static int frequency;
+    private static String longestWord;
+    private static double hackCode;
+    private static int wordCount;
 
     ThreadRunner(String text){
         this.text = text;
@@ -37,4 +37,26 @@ public class ThreadRunner extends Thread {
         this.longestWord = longestWord.getLongestWord();
         this.hackCode = hackCode.getHackCode();
     }
+
+    public static int getWordCount(){
+        return wordCount;
+    }
+
+    public static String getMostFrequentWord(){
+        return mostFrequentWord;
+    }
+
+    public static int getFrequency(){
+        return frequency;
+    }
+
+    public static String getLongestWord(){
+        return longestWord;
+    }
+
+    public static double getHackCode(){
+        return hackCode;
+    }
+
+
 }
